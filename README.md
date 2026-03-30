@@ -10,17 +10,26 @@ This project demonstrates how to design a decoupled backend system using queues 
 
 ## 🏗️ Architecture
 
-```mermaid
-graph LR
-    Client([Client]) -->|HTTP POST| API[API Gateway]
-    API -->|Proxies| Producer[Lambda<br>Producer]
-    Producer -->|Pushes Event| SQS[SQS<br>Message Queue]
-    SQS -->|Triggers| Worker[Lambda<br>Worker]
-    Worker -->|Sends Email| SES[Amazon SES]
-    Worker -.-|Simulates| Push[Push Notifications]
-```
+![Architecture Diagram](assets/architecture-diagram.png)
 
-**Client → API Gateway → Lambda (Producer) → SQS → Lambda (Worker) → SES**
+---
+
+## 🔄 System Flow
+
+1. Client sends request to API Gateway  
+2. API Lambda validates input and pushes message to SQS  
+3. SQS queues the message for asynchronous processing  
+4. Worker Lambda consumes messages from SQS  
+5. Notification is sent via AWS SES  
+
+---
+
+### 💡 Key Design Highlights
+
+- Decoupled architecture using SQS  
+- Asynchronous processing for scalability  
+- Serverless design using AWS Lambda  
+- Fault isolation and reliability  
 
 
 ## ⚙️ Why This Architecture?
@@ -28,12 +37,6 @@ graph LR
 - **Lambda →** Scales automatically with demand, meaning zero idle server costs.
 - **Event-driven design →** Enables asynchronous processing, so the client receives a lightning-fast response without waiting for the email dispatch.
 
-## 🔄 Flow
-1. **Intake:** Client sends a request to the API.
-2. **Validation:** API Lambda validates the payload and pushes a message to SQS.
-3. **Queueing:** SQS holds the message securely until a worker is ready.
-4. **Processing:** Worker Lambda consumes messages in batches.
-5. **Delivery:** The notification is processed and sent via SES.
 
 ## 🚀 Features
 - **Event-driven architecture**
