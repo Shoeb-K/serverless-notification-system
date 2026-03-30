@@ -8,7 +8,13 @@ def process_notification(data: dict) -> bool:
     log_info(f"Processing notification for {to_email}")
     
     # 1. Send Email via SES
-    email_success = send_email(to_email, message)
+    try:
+        email_success = send_email(to_email, message)
+        if not email_success:
+            raise Exception("Initial email dispatch failed")
+    except Exception as e:
+        log_error("Retrying...")
+        email_success = send_email(to_email, message)
     
     # 2. Simulate Push Notification
     # Note: In a production system, this could trigger AWS SNS or a push provider like Firebase.
