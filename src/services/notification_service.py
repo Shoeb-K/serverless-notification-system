@@ -8,6 +8,7 @@ def process_notification(data: dict) -> bool:
     log_info(f"Processing notification for {to_email}")
     
     # 1. Send Email via SES
+    log_info("Sending email notification")
     try:
         email_success = send_email(to_email, message)
         if not email_success:

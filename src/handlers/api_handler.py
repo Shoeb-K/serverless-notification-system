@@ -7,7 +7,7 @@ def lambda_handler(event, context):
     """
     Producer Handler for parsing API Gateway events and pushing valid requests to SQS.
     """
-    log_info("Received new API Gateway request.")
+    log_info("Received API request")
     
     try:
         # Extract body from API Gateway event
