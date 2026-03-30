@@ -77,7 +77,37 @@ The system follows an event-driven, decoupled architecture using AWS managed ser
 
 ---
 
-## ⚠️ Failure Handling (Concept)
+## ⚠️ Failure Handling
 
-- **Retries:** Failed messages can be retried automatically  
-- **Dead Letter Queue (DLQ):** Can be integrated to capture persistent failures and prevent message loss  
+- Messages are processed asynchronously via SQS
+- If processing fails, messages are retried automatically
+- Failed messages can be routed to a Dead Letter Queue (DLQ) for further analysis
+
+---
+
+## 📈 Scalability
+
+- AWS Lambda automatically scales based on incoming traffic
+- SQS acts as a buffer to handle traffic spikes
+- The system can process multiple messages in parallel
+
+---
+
+## ⚖️ Tradeoffs
+
+- Asynchronous processing introduces slight latency
+- Additional AWS services increase system complexity
+- Requires proper monitoring and logging
+
+---
+
+## 📬 Sample API Request
+
+`POST /notify`
+
+```json
+{
+  "email": "test@example.com",
+  "message": "Hello from system"
+}
+```
